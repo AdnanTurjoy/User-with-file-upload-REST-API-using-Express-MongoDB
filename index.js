@@ -6,8 +6,8 @@ const cors = require("cors");
 app.use(cors());
 const mongoose = require("mongoose");
 const ObjectId = require("mongodb").ObjectId;
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const PORT = 8005;
 const mongoAtlasUri = process.env.DB_URL;
 
@@ -108,6 +108,36 @@ app.delete("/users/:id", async (req, res) => {
     });
   }
 });
+
+// Update User
+
+app.put("/users/:id", upload.single("image"), async (req, res) => {
+  console.log(req.body);
+  try {
+    const selectedUser = await User.findOne({ _id: req.params.id });
+    if (selectedUser) {
+      await User.updateOne(
+        { _id: req.params.id },
+        {
+          $set: {
+            name: req.body.name,
+            image: req.file.filename,
+          },
+        }
+      );
+      res.status(200).send({
+        message: "product is updated",
+      });
+    } else {
+      res.status(404).send({ message: "product is not found with this id" });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
 // Create Users
 app.post("/adduser", upload.single("image"), async (req, res) => {
   console.log(req.body);
