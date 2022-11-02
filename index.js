@@ -93,15 +93,12 @@ app.get("/search/:key", async (req, res) => {
 // Delete User
 app.delete("/users/:id", async (req, res) => {
   try {
-    const query = req.params.id;
-    const DeletedUser = await User.findOne({ id: query });
-    if (DeletedUser) {
-      await User.deleteOne({ id: query });
-      res
-        .status(200)
-        .send({
-          message: "product is deleted",
-        });
+    const product = await User.findOne({ _id: req.params.id });
+    if (product) {
+      await User.deleteOne({ _id: req.params.id });
+      res.status(200).send({
+        message: "product is deleted",
+      });
     } else {
       res.status(404).send({ message: "product is not found with this id" });
     }
