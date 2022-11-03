@@ -1,13 +1,13 @@
 const express = require("express");
-// require("dotenv").config();
+
 const userRoute = require("./routes/userRoute");
 const app = express();
-// const multer = require("multer");
+
 const cors = require("cors");
 app.use(cors());
-// const mongoose = require("mongoose");
+
 const connectDB = require("./database/connection");
-// const ObjectId = require("mongodb").ObjectId;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
